@@ -61,12 +61,11 @@ void ESP32BLETracker::setup() {
   this->scanner_idle_ = true;
 
 #ifdef USE_OTA
-  ota::get_global_ota_callback()->add_on_state_callback(
-      [this](ota::OTAState state, float progress, uint8_t error, ota::OTAComponent *comp) {
-        if (state == ota::OTA_STARTED) {
-          this->stop_scan();
-        }
-      });
+  ota::global_ota_component->add_on_state_callback([this](ota::OTAState state, float progress, uint8_t error) {
+    if (state == ota::OTA_STARTED) {
+      this->stop_scan();
+    }
+  });
 #endif
 }
 
